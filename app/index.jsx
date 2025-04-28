@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default function HomeScreen() {
   const [categories, setCategories] = useState([]);
-  const router= useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
@@ -15,16 +15,14 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Kategori Resep</Text>
+      <Text style={styles.header}>Kategori Makanan</Text>
       <FlatList
         data={categories}
         keyExtractor={item => item.idCategory}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.card}
-            onPress={() =>{
-              console.log(`Navigating to: /recipedetailscreen/${item.idCategory}`);
-               router.push(`/recipedetailscreen/${item.idCategory}`)}}
+            onPress={() => router.push(`/recipelist?category=${item.strCategory}`)}
           >
             <Text style={styles.title}>{item.strCategory}</Text>
           </TouchableOpacity>

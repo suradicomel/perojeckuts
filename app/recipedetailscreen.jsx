@@ -1,28 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
-import { useLocalSearchParams } from 'expo-router/build/hooks';
 
 export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams();
   const [meal, setMeal] = useState(null);
 
   useEffect(() => {
-    console.log("Received ID in RecipeDetailScreen", id);
     if (id) {
-    axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
-      .then(res =>{ 
-        setMeal(res.data.meals[0]);
-        console.log(res.data.meals[0]); 
-      })
-      .catch(err => console.log(err));
+      axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+        .then(res => setMeal(res.data.meals[0]))
+        .catch(err => console.log(err));
     }
   }, [id]);
 
   if (!meal) return <Text>Loading...</Text>;
 
   const getIngredients = () => {
-    let ingredients = [];
+    const ingredients = [];
     for (let i = 1; i <= 20; i++) {
       const ingredient = meal[`strIngredient${i}`];
       const measure = meal[`strMeasure${i}`];
